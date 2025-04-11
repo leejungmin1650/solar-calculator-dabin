@@ -119,9 +119,11 @@ export default function Home() {
       <h3 className="text-md font-bold mt-6">📈 연간 순수익 및 누적 수익</h3>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={chartData}>
+          <YAxis tickFormatter={(v) => (v / 1_000_000) + 'M'} />
+          <ReferenceLine y={selfCapital} stroke="red" strokeDasharray="3 3" label={{ value: "손익분기점", position: "right", fill: "red", fontSize: 12 }} />
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
-          <YAxis />
+          
           <Tooltip />
           <Line type="monotone" dataKey="누적수익" stroke="#4f46e5" strokeWidth={2} />
           <Line type="monotone" dataKey="순수익" stroke="#10b981" strokeWidth={2} />
