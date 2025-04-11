@@ -29,7 +29,7 @@ export default function Home() {
   const selfCapital = capex - loan;
   const payback = selfCapital / netProfit;
 
-  const format = (v) => v.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const format = val => val.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
 
   const chartData = Array.from({ length: 20 }, (_, i) => {
     const year = i + 1;
@@ -49,7 +49,7 @@ export default function Home() {
     doc.setFontSize(10);
     doc.text(`설치용량: ${format(capacity)} kW`, 20, 35);
     doc.text(`발전시간: ${format(sunHours)} h/day`, 20, 42);
-    doc.text(`예상 발전량: ${format(generation)} kWh`, 20, 49);
+    doc.text(`예상 발전량: ${generation.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} kWh`, 20, 49);
     doc.text(`총 수익: ${format(totalRevenue)} 원`, 20, 56);
     doc.text(`운영비: ${format(opex)} 원`, 20, 63);
     doc.text(`대출금: ${format(loan)} 원`, 20, 70);
@@ -58,7 +58,7 @@ export default function Home() {
     doc.text(`연간 원리금: ${format(annualRepayment)} 원`, 20, 91);
     doc.text(`순수익: ${format(netProfit)} 원`, 20, 98);
     doc.text(`자기자본: ${format(selfCapital)} 원`, 20, 105);
-    doc.text(`회수기간: ${format(payback)} 년`, 20, 112);
+    doc.text(`회수기간: ${payback.toFixed(2)} 년`, 20, 112);
     doc.save('solar_profit_report.pdf');
   };
 
@@ -103,12 +103,12 @@ export default function Home() {
       </div>
 
       <div className="bg-gray-100 p-4 rounded text-sm">
-        <p>예상 발전량: <strong>{format(generation)}</strong> kWh</p>
+        <p>예상 발전량: <strong>{generation.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong> kWh</p>
         <p>총 수익: <strong>{format(totalRevenue)}</strong> 원</p>
         <p>운영비: <strong>{format(opex)}</strong> 원</p>
         <p>연간 원리금 상환: <strong>{format(annualRepayment)}</strong> 원</p>
         <p>순수익: <strong>{format(netProfit)}</strong> 원</p>
-        <p>회수기간 (자기자본 기준): <strong>{format(payback)}</strong> 년</p>
+        <p>회수기간 (자기자본 기준): <strong>{payback.toFixed(2)}</strong> 년</p>
       </div>
 
       <div className="flex gap-4">
