@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import jsPDF from 'jspdf';
 import * as XLSX from 'xlsx';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
 
 export default function Home() {
   const [capacity, setCapacity] = useState(100);
