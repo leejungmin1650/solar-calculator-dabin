@@ -4,6 +4,10 @@ import {
 } from 'recharts';
 
 export function ProfitChart({ data, breakEvenYear }) {
+  if (!data || data.length === 0) {
+    return <div className="text-gray-500 mt-4">수익 그래프를 계산 중입니다...</div>;
+  }
+
   return (
     <div className="mt-10">
       <h2 className="text-lg font-bold mb-2">연간 수익 및 손익분기점</h2>
@@ -14,7 +18,9 @@ export function ProfitChart({ data, breakEvenYear }) {
           <Tooltip formatter={(value) => `${value.toLocaleString()} 원`} />
           <Line type="monotone" dataKey="netProfit" name="연간 순이익" stroke="#82ca9d" />
           <Line type="monotone" dataKey="cumulativeProfit" name="누적 수익" stroke="#8884d8" />
-          <ReferenceLine x={breakEvenYear} label="손익분기점" stroke="red" strokeDasharray="3 3" />
+          {breakEvenYear && (
+            <ReferenceLine x={breakEvenYear} label="손익분기점" stroke="red" strokeDasharray="3 3" />
+          )}
         </LineChart>
       </ResponsiveContainer>
     </div>
