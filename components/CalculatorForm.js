@@ -70,7 +70,7 @@ export function CalculatorForm({ onDataChange }) {
         ['rec', 'REC 단가 (원/kWh)'],
         ['weight', 'REC 가중치'],
         ['operationCost', '운영비용 (연간, 원)'],
-        ['equity', '자기자본 (원)'],
+        ['equity', '투자금액 (원)'],
         ['loan', '대출금 (원)'],
         ['interest', '이자율 (%)'],
         ['term', '상환기간 (년)'],
