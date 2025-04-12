@@ -86,6 +86,7 @@ export function CalculatorForm({ onDataChange }) {
         </div>
       ))}
 
+      <h2 className="mt-6 mb-2 text-lg font-semibold">결과 요약</h2>
       <div className="mt-2 text-gray-700 text-sm space-y-1">
         <div>예상 발전량: {yearlyGen.toLocaleString()} kWh</div>
         <div>총 수익: {revenue.toLocaleString()} 원</div>

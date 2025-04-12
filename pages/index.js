@@ -30,14 +30,7 @@ export default function Home() {
       </div>
 
       {/* 결과 요약 */}
-      <h2 className="mt-8 mb-4 text-xl font-bold text-gray-700 border-b pb-2">결과 요약</h2>
-
-      <div className="bg-gray-100 p-5 rounded-lg shadow text-sm space-y-2 font-semibold text-gray-800 leading-relaxed">
-        {/* 결과 텍스트는 CalculatorForm 내부에서 출력됨 */}
-      </div>
-
-      {/* 수익 그래프 */}
-      <h2 className="mt-10 mb-4 text-xl font-bold text-gray-700 border-b pb-2">연간 수익 및 손익분기점</h2>
+      <h2 className="mt-8 mb-4 text-xl font-bold text-gray-700 border-b pb-2">연간 수익 및 손익분기점</h2>
       <div className="mb-8">
         <ProfitChart data={chartData} breakEvenYear={breakEvenYear} />
       </div>
