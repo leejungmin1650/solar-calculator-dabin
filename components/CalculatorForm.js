@@ -4,6 +4,10 @@ function calculatePMT(rate, nper, pv) {
   return (rate * pv) / (1 - Math.pow(1 + rate, -nper));
 }
 
+function parseNumber(value) {
+  return parseFloat((value || '0').toString().replace(/,/g, '')) || 0;
+}
+
 export function CalculatorForm({ onDataChange }) {
   const [form, setForm] = useState({
     capacity: 100,
@@ -12,28 +16,26 @@ export function CalculatorForm({ onDataChange }) {
     rec: 70,
     weight: 1.5,
     operationCost: 0,
-    equity: 70000000,
-    loan: 150000000,
+    equity: '70,000,000',
+    loan: '150,000,000',
     interest: 5.8,
-    term: 10,
-    totalCost: 220000000
+    term: 10
   });
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const capacity = parseFloat(form.capacity) || 0;
-  const hours = parseFloat(form.hours) || 0;
-  const smp = parseFloat(form.smp) || 0;
-  const rec = parseFloat(form.rec) || 0;
-  const weight = parseFloat(form.weight) || 0;
-  const operationCost = parseFloat(form.operationCost) || 0;
-  const equity = parseFloat(form.equity) || 0;
-  const loan = parseFloat(form.loan) || 0;
-  const interest = parseFloat(form.interest) || 0;
-  const term = parseFloat(form.term) || 0;
-  const totalCost = parseFloat(form.totalCost) || 0;
+  const capacity = parseNumber(form.capacity);
+  const hours = parseNumber(form.hours);
+  const smp = parseNumber(form.smp);
+  const rec = parseNumber(form.rec);
+  const weight = parseNumber(form.weight);
+  const operationCost = parseNumber(form.operationCost);
+  const equity = parseNumber(form.equity);
+  const loan = parseNumber(form.loan);
+  const interest = parseNumber(form.interest);
+  const term = parseNumber(form.term);
 
   const yearlyGen = capacity * 365 * hours;
   const revenue = yearlyGen * (smp + rec * weight);
@@ -45,7 +47,6 @@ export function CalculatorForm({ onDataChange }) {
   const payback = netProfit > 0 ? Math.ceil(equity / netProfit) : '-';
 
   useEffect(() => {
-    // 수익 그래프용 데이터 전달
     const data = [];
     let cumulative = 0;
     let breakEvenYear = null;
@@ -91,9 +92,6 @@ export function CalculatorForm({ onDataChange }) {
       </label>
       <label>상환기간 (년)
         <input name="term" value={form.term} onChange={handleChange} className="border p-2 w-full" />
-      </label>
-      <label>총투자비 (원)
-        <input name="totalCost" value={form.totalCost} onChange={handleChange} className="border p-2 w-full" />
       </label>
 
       <div className="mt-2 text-gray-700 font-semibold space-y-1">

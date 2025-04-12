@@ -1,8 +1,9 @@
-# solar-calculator-dabin-full
+# solar-calculator-dabin
 
-태양광 수익성 계산기 (기본값 포함, PDF 다운로드 기능 포함)
+태양광 수익성 계산기 (PDF, 그래프, 로고 포함)
 
-## 주요 기능
-- 설치용량, SMP, REC 등 기본값 설정
-- 보기 편한 입력 UI 구성
-- PDF 보고서 다운로드 (jspdf, html2canvas 사용)
+## 특징
+- 콤마 입력 가능 (ex: 70,000,000)
+- 총투자비 항목 제거
+- PDF에 로고, 사이트 주소, 법적 고지문구 포함
+- 손익분기점 포함 연간 수익 그래프

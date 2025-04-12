@@ -9,19 +9,23 @@ export function PDFButton() {
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF();
 
-      // 로고 이미지
       const logo = new Image();
       logo.src = '/logo.png';
       logo.onload = () => {
-        pdf.addImage(logo, 'PNG', 10, 10, 50, 15); // 로고 삽입
+        pdf.addImage(logo, 'PNG', 10, 10, 50, 15);
         pdf.setFontSize(10);
-        pdf.text('www.dabinenc.com', 10, 30); // 홈페이지 주소
+        pdf.text('www.dabinenc.com', 10, 30);
 
         const imgProps = pdf.getImageProperties(imgData);
         const pdfWidth = pdf.internal.pageSize.getWidth();
         const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
         pdf.addImage(imgData, 'PNG', 0, 35, pdfWidth, pdfHeight);
+
+        pdf.setFontSize(9);
+        pdf.text("※ 본 수지분석표는 추정치를 기반으로 작성된 자료로,", 10, pdf.internal.pageSize.getHeight() - 20);
+        pdf.text("실제 수익과 차이가 발생할 수 있습니다. 해당 자료는 참고용이며, 법적 효력이 없음을 안내드립니다.", 10, pdf.internal.pageSize.getHeight() - 15);
+        
         pdf.save('solar-calculator-report.pdf');
       };
     });
