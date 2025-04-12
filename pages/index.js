@@ -13,10 +13,10 @@ export default function Home() {
   };
 
   return (
-    <main className="p-4 max-w-4xl mx-auto">
+    <main className="px-4 py-4 max-w-full w-full mx-auto">
       {/* 로고 및 사이트 주소 표시 */}
-      <div className="flex items-center space-x-4 mb-4">
-        <img src="/logo.png" alt="Dabin Logo" className="w-32 h-auto" />
+      <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 mb-4 space-y-2 sm:space-y-0">
+        <img src="/logo.png" alt="Dabin Logo" className="w-24 h-auto sm:w-32" />
         <a href="https://solar-calculator-dabin77-pzxf.vercel.app" target="_blank" className="text-sm text-blue-600 underline">www.dabinenc.com</a>
       </div>
 
