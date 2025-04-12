@@ -50,7 +50,7 @@ export function CalculatorForm({ onDataChange }) {
     const data = [];
     let cumulative = 0;
     let breakEvenYear = null;
-    for (let y = 1; y <= 20; y++) {
+    for (let y = 1; y <= term; y++) {
       const yearly = netProfit;
       cumulative += yearly;
       data.push({ year: y, netProfit: yearly, cumulativeProfit: cumulative });
