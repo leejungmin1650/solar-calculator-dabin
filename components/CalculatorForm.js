@@ -62,39 +62,31 @@ export function CalculatorForm({ onDataChange }) {
   }, [form]);
 
   return (
-    <div className="grid grid-cols-1 gap-4">
-      <label>설치용량 (kW)
-        <input name="capacity" value={form.capacity} onChange={handleChange} className="border p-2 w-full" />
-      </label>
-      <label>일일 발전시간 (h)
-        <input name="hours" value={form.hours} onChange={handleChange} className="border p-2 w-full" />
-      </label>
-      <label>SMP 단가 (원/kWh)
-        <input name="smp" value={form.smp} onChange={handleChange} className="border p-2 w-full" />
-      </label>
-      <label>REC 단가 (원/kWh)
-        <input name="rec" value={form.rec} onChange={handleChange} className="border p-2 w-full" />
-      </label>
-      <label>REC 가중치
-        <input name="weight" value={form.weight} onChange={handleChange} className="border p-2 w-full" />
-      </label>
-      <label>운영비용 (연간, 원)
-        <input name="operationCost" value={form.operationCost} onChange={handleChange} className="border p-2 w-full" />
-      </label>
-      <label>자기자본 (원)
-        <input name="equity" value={form.equity} onChange={handleChange} className="border p-2 w-full" />
-      </label>
-      <label>대출금 (원)
-        <input name="loan" value={form.loan} onChange={handleChange} className="border p-2 w-full" />
-      </label>
-      <label>이자율 (%)
-        <input name="interest" value={form.interest} onChange={handleChange} className="border p-2 w-full" />
-      </label>
-      <label>상환기간 (년)
-        <input name="term" value={form.term} onChange={handleChange} className="border p-2 w-full" />
-      </label>
+    <div className="grid grid-cols-1 gap-3">
+      {[
+        ['capacity', '설치용량 (kW)'],
+        ['hours', '일일 발전시간 (h)'],
+        ['smp', 'SMP 단가 (원/kWh)'],
+        ['rec', 'REC 단가 (원/kWh)'],
+        ['weight', 'REC 가중치'],
+        ['operationCost', '운영비용 (연간, 원)'],
+        ['equity', '자기자본 (원)'],
+        ['loan', '대출금 (원)'],
+        ['interest', '이자율 (%)'],
+        ['term', '상환기간 (년)'],
+      ].map(([name, label]) => (
+        <div key={name}>
+          <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+          <input
+            name={name}
+            value={form[name]}
+            onChange={handleChange}
+            className="w-full border p-2 rounded"
+          />
+        </div>
+      ))}
 
-      <div className="mt-2 text-gray-700 font-semibold space-y-1">
+      <div className="mt-2 text-gray-700 text-sm space-y-1">
         <div>예상 발전량: {yearlyGen.toLocaleString()} kWh</div>
         <div>총 수익: {revenue.toLocaleString()} 원</div>
         <div>운영비: {operationCost.toLocaleString()} 원</div>
