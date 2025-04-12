@@ -1,5 +1,7 @@
 
-import { useState } from "react";
+import { useState, useRef } from "react";
+import dynamic from 'next/dynamic';
+const PDFButton = dynamic(() => import('../components/PDFButton'), { ssr: false });
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip,
   ResponsiveContainer, ReferenceLine
@@ -17,26 +19,33 @@ export default function Home() {
   const [rate, setRate] = useState("");
   const [years, setYears] = useState("");
 
+  
+  const parse = (v) => isNaN(parseFloat((v || '').toString().replace(/,/g, ''))) ? 0 : parseFloat((v || '').toString().replace(/,/g, ''));
   const parsed = {
-    capacity: parseFloat(capacity || 0),
-    sunHours: parseFloat(sunHours || 0),
-    smp: parseFloat(smp || 0),
-    rec: parseFloat(rec || 0),
-    recWeight: parseFloat(recWeight || 0),
-    opex: parseFloat(opex || 0),
-    capex: parseFloat(capex || 0),
-    loan: parseFloat(loan || 0),
-    rate: parseFloat(rate || 0),
-    years: parseFloat(years || 0),
+
+    capacity: parse(capacity),
+    sunHours: parse(sunHours),
+    smp: parse(smp),
+    rec: parse(rec),
+    recWeight: parse(recWeight),
+    opex: parse(opex),
+    capex: parse(capex),
+    loan: parse(loan),
+    rate: parse(rate),
+    years: parse(years),
   };
 
   const generation = parsed.capacity * parsed.sunHours * 365;
   const smpProfit = generation * parsed.smp;
   const recProfit = generation * parsed.rec * parsed.recWeight;
   const totalProfit = smpProfit + recProfit;
-  const annualPrincipal = parsed.loan / parsed.years;
-  const annualInterest = parsed.loan * (parsed.rate / 100);
-  const annualRepayment = annualPrincipal + annualInterest;
+  
+  const r = parsed.rate / 100;
+  const n = parsed.years;
+  const annualRepayment = r > 0
+    ? parsed.loan * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1)
+    : parsed.loan / n;
+
   const netProfit = totalProfit - parsed.opex - annualRepayment;
   const selfCapital = parsed.capex - parsed.loan;
   const payback = selfCapital / netProfit;
@@ -47,8 +56,10 @@ export default function Home() {
     누적수익: netProfit * (i + 1),
   }));
 
+  const reportRef = useRef();
+
   return (
-    <div className="p-4 max-w-3xl mx-auto">
+    <div className="p-4 max-w-3xl mx-auto" ref={reportRef}>
       <div className="flex justify-between items-center mb-4">
         <img src="/logo.png" alt="DABIN" className="h-10" />
         <a href="http://www.dabinenc.com" target="_blank" className="text-blue-600 underline">www.dabinenc.com</a>
@@ -62,18 +73,18 @@ export default function Home() {
         <label>REC 단가 (원)<input value={rec} onChange={e => setRec(e.target.value)} className="border p-1 w-full" /></label>
         <label>REC 가중치<input value={recWeight} onChange={e => setRecWeight(e.target.value)} className="border p-1 w-full" /></label>
         <label>운영비 (원)<input value={opex} onChange={e => setOpex(e.target.value)} className="border p-1 w-full" /></label>
-        <label>총 투자비 (원)<input value={capex} onChange={e => setCapex(e.target.value)} className="border p-1 w-full" /></label>
+        <label>자기자본 (원)<input value={capex} onChange={e => setCapex(e.target.value)} className="border p-1 w-full" /></label>
         <label>대출금 (원)<input value={loan} onChange={e => setLoan(e.target.value)} className="border p-1 w-full" /></label>
         <label>이자율 (%)<input value={rate} onChange={e => setRate(e.target.value)} className="border p-1 w-full" /></label>
         <label>상환기간 (년)<input value={years} onChange={e => setYears(e.target.value)} className="border p-1 w-full" /></label>
       </div>
 
-      <p>예상 발전량: {generation.toLocaleString()} kWh</p>
-      <p>총 수익: {totalProfit.toLocaleString()} 원</p>
-      <p>운영비: {parsed.opex.toLocaleString()} 원</p>
-      <p>연간 원리금 상환: {annualRepayment.toLocaleString()} 원</p>
-      <p>순수익: {netProfit.toLocaleString()} 원</p>
-      <p>회수기간 (자기자본 기준): {payback.toFixed(2)} 년</p>
+      <p>예상 발전량: {isNaN(generation) ? '-' : generation.toLocaleString(undefined, {maximumFractionDigits: 2})} kWh</p>
+      <p>총 수익: {isNaN(totalProfit) ? '-' : totalProfit.toLocaleString(undefined, {maximumFractionDigits: 2})} 원</p>
+      <p>운영비: {isNaN(parsed.opex) ? '-' : parsed.opex.toLocaleString(undefined, {maximumFractionDigits: 2})} 원</p>
+      <p>연간 원리금 상환: {isNaN(annualRepayment) ? '-' : annualRepayment.toLocaleString(undefined, {maximumFractionDigits: 2})} 원</p>
+      <p>순수익: {isNaN(netProfit) ? '-' : netProfit.toLocaleString(undefined, {maximumFractionDigits: 2})} 원</p>
+      <p>회수기간: {isNaN(payback) ? '-' : payback.toFixed(2)} 년</p>
 
       <h2 className="mt-6 font-bold">📈 연간 순수익 및 누적 수익</h2>
       <ResponsiveContainer width="100%" height={300}>
@@ -88,6 +99,7 @@ export default function Home() {
           <ReferenceLine x={`${Math.ceil(payback)}년`} stroke="gray" strokeDasharray="3 3" label="회수시점" />
         </LineChart>
       </ResponsiveContainer>
+      <PDFButton reportRef={reportRef} />
     </div>
   );
 }
