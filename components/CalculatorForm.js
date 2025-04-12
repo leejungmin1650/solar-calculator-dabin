@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 
+function calculatePMT(rate, nper, pv) {
+  return (rate * pv) / (1 - Math.pow(1 + rate, -nper));
+}
+
 export function CalculatorForm() {
   const [form, setForm] = useState({
     capacity: 100,
@@ -7,15 +11,22 @@ export function CalculatorForm() {
     smp: 140,
     rec: 70,
     weight: 1.5,
-    totalCost: 70000000,
+    operationCost: 0,
+    equity: 70000000,
     loan: 150000000,
     interest: 5.8,
     term: 10,
+    totalCost: 220000000
   });
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
+
+  const monthlyRate = (parseFloat(form.interest) || 0) / 100 / 12;
+  const nper = (parseFloat(form.term) || 0) * 12;
+  const pmt = calculatePMT(monthlyRate, nper, parseFloat(form.loan) || 0);
+  const yearlyRepayment = Math.round(pmt * 12);
 
   return (
     <div className="grid grid-cols-1 gap-4">
@@ -34,8 +45,11 @@ export function CalculatorForm() {
       <label>REC 가중치
         <input name="weight" value={form.weight} onChange={handleChange} className="border p-2 w-full" />
       </label>
-      <label>총 투자비 (원)
-        <input name="totalCost" value={form.totalCost} onChange={handleChange} className="border p-2 w-full" />
+      <label>운영비용 (연간, 원)
+        <input name="operationCost" value={form.operationCost} onChange={handleChange} className="border p-2 w-full" />
+      </label>
+      <label>자기자본 (원)
+        <input name="equity" value={form.equity} onChange={handleChange} className="border p-2 w-full" />
       </label>
       <label>대출금 (원)
         <input name="loan" value={form.loan} onChange={handleChange} className="border p-2 w-full" />
@@ -46,6 +60,13 @@ export function CalculatorForm() {
       <label>상환기간 (년)
         <input name="term" value={form.term} onChange={handleChange} className="border p-2 w-full" />
       </label>
+      <label>총투자비 (원)
+        <input name="totalCost" value={form.totalCost} onChange={handleChange} className="border p-2 w-full" />
+      </label>
+
+      <div className="mt-2 text-gray-700 font-semibold">
+        연간 원리금 상환액: {yearlyRepayment.toLocaleString()} 원
+      </div>
     </div>
   );
 }
