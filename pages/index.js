@@ -28,7 +28,7 @@ export default function Home() {
       </div>
 
       <div className="mb-8">
-        <h2 className="text-xl font-bold text-gray-700 mb-3">연간 수익 및 손익분기점</h2>
+        
         <ProfitChart data={chartData} breakEvenYear={breakEvenYear} />
       </div>
 
