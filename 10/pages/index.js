@@ -29,12 +29,6 @@ export default function Home() {
         <CalculatorForm onDataChange={handleDataChange} />
       </div>
 
-      {/* 결과 요약 */}
-      <h2 className="mt-8 mb-4 text-xl font-bold text-gray-700 border-b pb-2">연간 수익 및 손익분기점</h2>
-      <div className="mb-8">
-        <ProfitChart data={chartData} breakEvenYear={breakEvenYear} />
-      </div>
-
       {/* PDF 버튼 */}
       <div className="flex justify-center mt-6">
         <PDFButton />
